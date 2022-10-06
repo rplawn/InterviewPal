@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Text, View, Button } from 'react-native';
+import axios from "axios";
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
-import { categories, questions } from '../data-hardcoded/data';
+//import { categories, questions } from '../data-hardcoded/data';
 import { getQuestionsByCatId, randomValuesFromArray } from '../data_helpers/dataHelpers';
 
 // export default function CategoriesScreen({ navigation }) {
@@ -46,12 +47,34 @@ import { getQuestionsByCatId, randomValuesFromArray } from '../data_helpers/data
 // }
 
 export default function CategoriesScreen({navigation}) {
+   const [categories, setCategories] = useState([]);
+   const [questions, setQuestions] = useState([]);
+
+   useEffect(() => {
+      axios.get("http://localhost:8080/categories")
+           .then((response) => {
+           setCategories(response.data)
+           
+       }).catch((error) => {
+           console.log(error);
+     });
+  }, [])
+
+  useEffect(() => {
+      axios.get("http://localhost:8080/questions")
+           .then((response) => {
+           setQuestions(response.data)
+       }).catch((error) => {
+           console.log(error);
+     });
+  }, [])
+
    const categoriesList = categories.map((cat) => 
             <Button
                 key={cat.id}
-                title={cat.catName}
+                title={cat.name}
              onPress={() => {
-                 let QuestionsByCategory = getQuestionsByCatId(cat.id, questions)
+                 let QuestionsByCategory = getQuestionsByCatId(name, questions)
                  let randomQuestionsArray = randomValuesFromArray(QuestionsByCategory);
                  navigation.navigate('Question', {array: randomQuestionsArray})  
              }                  
