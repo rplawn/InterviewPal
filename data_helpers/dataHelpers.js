@@ -35,9 +35,10 @@ export const addAnswer = (ansText, id, ansArray) => {
 //retrieves the last answer entered associated with a question
 export const lastAnswerByQuestionID = (array, qId) => {
    let ansArray = []
-    for(ans of array) {
-       if (ans.questionId === qId) {
+    for(const ans of array) {
+       if (ans.questionid === qId) {
           ansArray.push(ans)
+          
        }
     }
     return ansArray[ansArray.length - 1].answer

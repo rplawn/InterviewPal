@@ -3,8 +3,9 @@ import React, {useState, useEffect} from 'react';
 import { Text, View, Button, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { answers } from '../data-hardcoded/data';
-import { addAnswer } from '../data_helpers/dataHelpers';
+import axios from 'axios';
+//import { answers } from '../data-hardcoded/data';
+//import { addAnswer } from '../data_helpers/dataHelpers';
 
 // export default function QuestionScreen({ route, navigation }) {
 //   const { catId, questionId } = route.params;
@@ -24,10 +25,20 @@ import { addAnswer } from '../data_helpers/dataHelpers';
 //   );
 // }
 
+const addAnswer = (ansText, id) => {
+   axios.post("http://localhost:8080/answers", {
+      answer: ansText,
+      questionid: id
+ }).catch((error) => {
+     console.log(error)
+  })
+}
+
 export default function QuestionScreen({ route, navigation }) {
   const { array, questionIndex} = route.params;
   const [text, onChangeText] = useState("Your answer");
   const [time, setTime] = useState(0);
+   
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -56,8 +67,8 @@ export default function QuestionScreen({ route, navigation }) {
             title="Summary" 
             disabled={text === "Your answer" ? true: false}
             onPress={() => {
-                 addAnswer(text, array[questionIndex].id, answers )
-                 navigation.navigate('Summary',{array: array, arrayofAns: answers})
+                 addAnswer(text, array[questionIndex].id)
+                 navigation.navigate('Summary',{array: array})
                }
               }
             />
@@ -65,8 +76,8 @@ export default function QuestionScreen({ route, navigation }) {
         title="Next Question"
         disabled={text === "Your answer" ? true: false}
         onPress={() => {
-              addAnswer(text, array[questionIndex].id, answers )
-              navigation.push('Question', {array: array, questionIndex: questionIndex + 1, arrayofAns: answers})
+              addAnswer(text, array[questionIndex].id)
+              navigation.push('Question', {array: array, questionIndex: questionIndex + 1})
            }
          }
       />

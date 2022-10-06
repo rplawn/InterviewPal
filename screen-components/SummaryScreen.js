@@ -1,8 +1,10 @@
-import * as React from 'react';
+//import * as React from 'react';
+import {useState, useEffect} from 'react';
 import { Text, View, Button } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 import { lastAnswerByQuestionID } from '../data_helpers/dataHelpers';
+import axios from 'axios';
 
 
 // export default function SummaryScreen({ navigation }) {
@@ -21,11 +23,26 @@ import { lastAnswerByQuestionID } from '../data_helpers/dataHelpers';
 // }
 
 export default function SummaryScreen({ route, navigation }) {
-  const { array, arrayofAns } = route.params;
+  const { array } = route.params;
+  const [answers, setAnswers] = useState([]);
+  const array1 = [...answers]
+  const anArr = lastAnswerByQuestionID(array1, 2)
+  console.log(anArr)
+
+  useEffect(() => {
+      axios.get("http://localhost:8080/answers")
+           .then((response) => {
+           setAnswers(response.data)
+           
+       }).catch((error) => {
+           console.log(error);
+     });
+  }, [])
+
   const questionsList = array.map((q) =>
     <View key={q.id}> 
      <Text>{q.text}</Text>
-     <Text>{lastAnswerByQuestionID(arrayofAns, q.id)}</Text>
+     <Text></Text>
     </View>
    )
   return (

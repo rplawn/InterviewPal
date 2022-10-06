@@ -74,7 +74,7 @@ export default function CategoriesScreen({navigation}) {
                 key={cat.id}
                 title={cat.name}
              onPress={() => {
-                 let QuestionsByCategory = getQuestionsByCatId(name, questions)
+                 let QuestionsByCategory = getQuestionsByCatId(cat.id, questions)
                  let randomQuestionsArray = randomValuesFromArray(QuestionsByCategory);
                  navigation.navigate('Question', {array: randomQuestionsArray})  
              }                  
