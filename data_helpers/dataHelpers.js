@@ -1,7 +1,7 @@
 //Gets an array of questions based on category ID
 export const getQuestionsByCatId  = (id, array) => {
   let newArray = [];
-  for (q of array) {
+  for (const q of array) {
     if (q.category === id) {
       newArray.push(q)
    }
@@ -37,9 +37,9 @@ export const lastAnswerByQuestionID = (array, qId) => {
    let ansArray = []
     for(const ans of array) {
        if (ans.questionid === qId) {
-          ansArray.push(ans)
+          ansArray.push(ans.answer)
           
        }
     }
-    return ansArray[ansArray.length - 1].answer
+    return ansArray[ansArray.length - 1]
 }

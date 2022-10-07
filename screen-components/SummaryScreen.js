@@ -1,4 +1,4 @@
-//import * as React from 'react';
+import * as React from 'react';
 import {useState, useEffect} from 'react';
 import { Text, View, Button } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
@@ -26,8 +26,8 @@ export default function SummaryScreen({ route, navigation }) {
   const { array } = route.params;
   const [answers, setAnswers] = useState([]);
   const array1 = [...answers]
-  const anArr = lastAnswerByQuestionID(array1, 2)
-  console.log(anArr)
+  //const anArr = lastAnswerByQuestionID(array1, 2)
+  //console.log(anArr)
 
   useEffect(() => {
       axios.get("http://localhost:8080/answers")
@@ -42,7 +42,7 @@ export default function SummaryScreen({ route, navigation }) {
   const questionsList = array.map((q) =>
     <View key={q.id}> 
      <Text>{q.text}</Text>
-     <Text></Text>
+     <Text>{lastAnswerByQuestionID(array1, q.id)}</Text>
     </View>
    )
   return (
